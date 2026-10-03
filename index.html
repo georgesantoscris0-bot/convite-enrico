@@ -238,8 +238,8 @@
 <body onclick="iniciarMusicaComClique()">
 
     <!-- ELEMENTO DE ÁUDIO E BOTÃO -->
-    <audio id="musicaFundo" loop>
-        <source src="musica.mp3" type="audio/mpeg">
+    <audio id="musicaFundo" loop preload="auto">
+        <source src="musica.mp3?v=2" type="audio/mpeg">
     </audio>
 
     <button class="btn-audio" id="btnAudio" onclick="alternarAudio(event)">🎵</button>
@@ -309,18 +309,34 @@
         const URL_API_GOOGLE = "https://script.google.com/macros/s/AKfycbxpwRNfGTK2_bCCVzrVjeLj3JeyzkvKoonnR08xMwEQioJNhZSSc-qGQNtGThRx0GvpLA/exec";
 
         const musica = document.getElementById("musicaFundo");
-        const btnAudio = document.getElementById("btnAudio");
-        let musicaIniciada = false;
+const btnAudio = document.getElementById("btnAudio");
 
-        // Ativa a música no primeiro toque na tela
-        function iniciarMusicaComClique() {
-            if (!musicaIniciada) {
-                musica.play().then(() => {
-                    musicaIniciada = true;
-                    btnAudio.textContent = "🔊";
-                }).catch(e => console.log("Aguardando interação para áudio."));
-            }
-        }
+// Função para iniciar a música
+function tocarMusica() {
+    musica.play().then(() => {
+        btnAudio.textContent = "🔊";
+    }).catch(erro => {
+        console.log("Erro ao reproduzir áudio:", erro);
+    });
+}
+
+// Tenta tocar no primeiro clique/toque na tela
+function iniciarMusicaComClique() {
+    if (musica.paused) {
+        tocarMusica();
+    }
+}
+
+// Botão de alternar (Play / Pause)
+function alternarAudio(e) {
+    e.stopPropagation(); // Impede interferência com o clique do body
+    if (musica.paused) {
+        tocarMusica();
+    } else {
+        musica.pause();
+        btnAudio.textContent = "🔇";
+    }
+}
 
         // Alterna entre tocar e pausar
         function alternarAudio(e) {
