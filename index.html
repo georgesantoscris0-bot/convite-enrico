@@ -26,6 +26,47 @@
             position: relative;
         }
 
+        /* ANIMAÇÃO DO FOGUETE EM ÓRBITA */
+        .orbita-foguete {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 380px;
+            height: 640px;
+            margin-top: -320px;
+            margin-left: -190px;
+            pointer-events: none;
+            z-index: 99;
+            animation: orbitar 12s linear infinite;
+        }
+
+        .foguete-animado {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            font-size: 2.5rem;
+            transform: translate(-50%, -50%) rotate(45deg);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+        }
+
+        @keyframes orbitar {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .orbita-foguete {
+                width: 320px;
+                height: 560px;
+                margin-top: -280px;
+                margin-left: -160px;
+            }
+        }
+
         .fundo-ludico {
             position: absolute;
             top: 0;
@@ -130,7 +171,6 @@
             line-height: 1.2;
         }
 
-        /* Estilo para o link do mapa */
         .link-mapa {
             color: #0288d1;
             text-decoration: underline;
@@ -204,12 +244,11 @@
             box-shadow: 0 0px 0 #01579b;
         }
 
-        /* BOTÃO FLUTUANTE DE ÁUDIO */
         .btn-audio {
             position: fixed;
             top: 15px;
             right: 15px;
-            z-index: 10;
+            z-index: 100;
             background: #ffb300;
             border: 2px solid #fff;
             border-radius: 50%;
@@ -236,6 +275,11 @@
     </style>
 </head>
 <body onclick="iniciarMusicaComClique()">
+
+    <!-- FOGUETE EM ÓRBITA -->
+    <div class="orbita-foguete">
+        <div class="foguete-animado">🚀</div>
+    </div>
 
     <!-- ELEMENTO DE ÁUDIO E BOTÃO -->
     <audio id="musicaFundo" loop preload="auto">
@@ -284,7 +328,6 @@
             </div>
         </div>
 
-        <!-- CARD COM O LINK DIRETO DO GOOGLE MAPS -->
         <div class="info-card">
             <div class="icon-balao">📍</div>
             <div class="info-content">
@@ -309,42 +352,26 @@
         const URL_API_GOOGLE = "https://script.google.com/macros/s/AKfycbxpwRNfGTK2_bCCVzrVjeLj3JeyzkvKoonnR08xMwEQioJNhZSSc-qGQNtGThRx0GvpLA/exec";
 
         const musica = document.getElementById("musicaFundo");
-const btnAudio = document.getElementById("btnAudio");
+        const btnAudio = document.getElementById("btnAudio");
 
-// Função para iniciar a música
-function tocarMusica() {
-    musica.play().then(() => {
-        btnAudio.textContent = "🔊";
-    }).catch(erro => {
-        console.log("Erro ao reproduzir áudio:", erro);
-    });
-}
+        function tocarMusica() {
+            musica.play().then(() => {
+                btnAudio.textContent = "🔊";
+            }).catch(erro => {
+                console.log("Erro ao reproduzir áudio:", erro);
+            });
+        }
 
-// Tenta tocar no primeiro clique/toque na tela
-function iniciarMusicaComClique() {
-    if (musica.paused) {
-        tocarMusica();
-    }
-}
+        function iniciarMusicaComClique() {
+            if (musica.paused) {
+                tocarMusica();
+            }
+        }
 
-// Botão de alternar (Play / Pause)
-function alternarAudio(e) {
-    e.stopPropagation(); // Impede interferência com o clique do body
-    if (musica.paused) {
-        tocarMusica();
-    } else {
-        musica.pause();
-        btnAudio.textContent = "🔇";
-    }
-}
-
-        // Alterna entre tocar e pausar
         function alternarAudio(e) {
             e.stopPropagation();
             if (musica.paused) {
-                musica.play();
-                btnAudio.textContent = "🔊";
-                musicaIniciada = true;
+                tocarMusica();
             } else {
                 musica.pause();
                 btnAudio.textContent = "🔇";
