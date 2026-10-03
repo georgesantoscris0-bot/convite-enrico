@@ -204,6 +204,25 @@
             box-shadow: 0 0px 0 #01579b;
         }
 
+        /* BOTÃO FLUTUANTE DE ÁUDIO */
+        .btn-audio {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 10;
+            background: #ffb300;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         @keyframes balanco {
             0% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-5px) rotate(3deg); }
@@ -216,7 +235,14 @@
         }
     </style>
 </head>
-<body>
+<body onclick="iniciarMusicaComClique()">
+
+    <!-- ELEMENTO DE ÁUDIO E BOTÃO -->
+    <audio id="musicaFundo" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="btn-audio" id="btnAudio" onclick="alternarAudio(event)">🎵</button>
 
     <div class="fundo-ludico"></div>
     <div class="planeta-1">🪐</div>
@@ -281,6 +307,33 @@
 
     <script>
         const URL_API_GOOGLE = "https://script.google.com/macros/s/AKfycbxpwRNfGTK2_bCCVzrVjeLj3JeyzkvKoonnR08xMwEQioJNhZSSc-qGQNtGThRx0GvpLA/exec";
+
+        const musica = document.getElementById("musicaFundo");
+        const btnAudio = document.getElementById("btnAudio");
+        let musicaIniciada = false;
+
+        // Ativa a música no primeiro toque na tela
+        function iniciarMusicaComClique() {
+            if (!musicaIniciada) {
+                musica.play().then(() => {
+                    musicaIniciada = true;
+                    btnAudio.textContent = "🔊";
+                }).catch(e => console.log("Aguardando interação para áudio."));
+            }
+        }
+
+        // Alterna entre tocar e pausar
+        function alternarAudio(e) {
+            e.stopPropagation();
+            if (musica.paused) {
+                musica.play();
+                btnAudio.textContent = "🔊";
+                musicaIniciada = true;
+            } else {
+                musica.pause();
+                btnAudio.textContent = "🔇";
+            }
+        }
 
         function processarConfirmacao() {
             const inputNome = document.getElementById("nomeConvidado");
