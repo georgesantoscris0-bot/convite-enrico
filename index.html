@@ -18,12 +18,183 @@
             font-family: 'Fredoka', sans-serif;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
             color: #2c3e50;
             padding: 20px 10px;
             overflow-x: hidden;
             position: relative;
+        }
+
+        /* FUNDO DE ESTRELAS */
+        .fundo-ludico {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 10% 15%, #fff 1px, transparent 1px),
+                              radial-gradient(circle at 30% 65%, #fff 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 80% 25%, #fff 1px, transparent 1px),
+                              radial-gradient(circle at 55% 80%, #ffeb3b 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 88% 70%, #fff 1px, transparent 1px),
+                              radial-gradient(circle at 25% 40%, #fff 2px, transparent 2px);
+            background-size: 120px 120px;
+            z-index: 0;
+        }
+
+        /* -------------------------------------------------------------
+           SISTEMA SOLAR: 8 PLANETAS EM ÓRBITA CIRCULAR / ELÍPTICA
+           ------------------------------------------------------------- */
+        .sistema-solar-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            max-width: 900px;
+            max-height: 900px;
+            pointer-events: none;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .orbita-planeta {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            animation: girarOrbita linear infinite;
+        }
+
+        .planeta-corpo {
+            position: absolute;
+            top: 0;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 1. Mercúrio */
+        .orbita-mercurio {
+            width: 380px;
+            height: 380px;
+            animation-duration: 9s;
+        }
+        .planeta-mercurio {
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 30% 30%, #b5b5b5, #707070);
+        }
+
+        /* 2. Vênus */
+        .orbita-venus {
+            width: 440px;
+            height: 440px;
+            animation-duration: 14s;
+            animation-direction: reverse;
+        }
+        .planeta-venus {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 30% 30%, #ffd59e, #e58e26);
+        }
+
+        /* 3. Terra */
+        .orbita-terra {
+            width: 510px;
+            height: 510px;
+            animation-duration: 18s;
+        }
+        .planeta-terra {
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle at 30% 30%, #4bcdda, #0984e3);
+        }
+
+        /* 4. Marte */
+        .orbita-marte {
+            width: 580px;
+            height: 580px;
+            animation-duration: 22s;
+        }
+        .planeta-marte {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle at 30% 30%, #ff7675, #d63031);
+        }
+
+        /* 5. Júpiter */
+        .orbita-jupiter {
+            width: 660px;
+            height: 660px;
+            animation-duration: 30s;
+        }
+        .planeta-jupiter {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ffeaa7, #d35400, #ffeaa7, #b2bec3);
+        }
+
+        /* 6. Saturno com anéis */
+        .orbita-saturno {
+            width: 750px;
+            height: 750px;
+            animation-duration: 38s;
+            animation-direction: reverse;
+        }
+        .planeta-saturno {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 30% 30%, #fde047, #ca8a04);
+            position: relative;
+        }
+        .anel-saturno {
+            position: absolute;
+            width: 50px;
+            height: 14px;
+            border: 4px solid rgba(253, 224, 71, 0.7);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+        }
+
+        /* 7. Urano */
+        .orbita-urano {
+            width: 830px;
+            height: 830px;
+            animation-duration: 45s;
+        }
+        .planeta-urano {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #81ecec, #00cec9);
+        }
+
+        /* 8. Netuno */
+        .orbita-netuno {
+            width: 900px;
+            height: 900px;
+            animation-duration: 52s;
+        }
+        .planeta-netuno {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #74b9ff, #0984e3);
+        }
+
+        @keyframes girarOrbita {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* ANIMAÇÃO DO FOGUETE EM ÓRBITA */
@@ -50,14 +221,11 @@
         }
 
         @keyframes orbitar {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
+        /* REGRA RESPONSIVA PARA DISPOSITIVOS MÓVEIS */
         @media (max-width: 480px) {
             .orbita-foguete {
                 width: 320px;
@@ -65,34 +233,18 @@
                 margin-top: -280px;
                 margin-left: -160px;
             }
+
+            .orbita-mercurio { width: 330px; height: 330px; }
+            .orbita-venus    { width: 380px; height: 380px; }
+            .orbita-terra    { width: 430px; height: 430px; }
+            .orbita-marte    { width: 480px; height: 480px; }
+            .orbita-jupiter  { width: 530px; height: 530px; }
+            .orbita-saturno  { width: 590px; height: 590px; }
+            .orbita-urano    { width: 640px; height: 640px; }
+            .orbita-netuno   { width: 700px; height: 700px; }
         }
 
-        .fundo-ludico {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 10% 15%, #fff 1px, transparent 1px),
-                              radial-gradient(circle at 30% 65%, #fff 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 80% 25%, #fff 1px, transparent 1px),
-                              radial-gradient(circle at 55% 80%, #ffeb3b 1.5px, transparent 1.5px),
-                              radial-gradient(circle at 88% 70%, #fff 1px, transparent 1px),
-                              radial-gradient(circle at 25% 40%, #fff 2px, transparent 2px);
-            background-size: 120px 120px;
-            z-index: 0;
-        }
-
-        .planeta-1, .planeta-2 {
-            position: absolute;
-            font-size: 30px;
-            opacity: 0.7;
-            z-index: 0;
-            animation: flutuarPlaneta 6s ease-in-out infinite alternate;
-        }
-        .planeta-1 { top: 15px; left: 15px; }
-        .planeta-2 { bottom: 15px; right: 15px; }
-
+        /* CONTEÚDO DO CONVITE */
         .convite-container {
             background: #ffffff;
             border: 5px solid #ffb300; 
@@ -102,7 +254,7 @@
             max-width: 360px;
             text-align: center;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            z-index: 1;
+            z-index: 10;
             position: relative;
             align-self: center;
         }
@@ -267,14 +419,54 @@
             50% { transform: translateY(-5px) rotate(3deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
-
-        @keyframes flutuarPlaneta {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-10px); }
-        }
     </style>
 </head>
 <body onclick="iniciarMusicaComClique()">
+
+    <!-- SISTEMA SOLAR: OS 8 PLANETAS EM ÓRBITA -->
+    <div class="sistema-solar-container">
+        <!-- 1. Mercúrio -->
+        <div class="orbita-planeta orbita-mercurio">
+            <div class="planeta-corpo planeta-mercurio" title="Mercúrio"></div>
+        </div>
+
+        <!-- 2. Vênus -->
+        <div class="orbita-planeta orbita-venus">
+            <div class="planeta-corpo planeta-venus" title="Vênus"></div>
+        </div>
+
+        <!-- 3. Terra -->
+        <div class="orbita-planeta orbita-terra">
+            <div class="planeta-corpo planeta-terra" title="Terra"></div>
+        </div>
+
+        <!-- 4. Marte -->
+        <div class="orbita-planeta orbita-marte">
+            <div class="planeta-corpo planeta-marte" title="Marte"></div>
+        </div>
+
+        <!-- 5. Júpiter -->
+        <div class="orbita-planeta orbita-jupiter">
+            <div class="planeta-corpo planeta-jupiter" title="Júpiter"></div>
+        </div>
+
+        <!-- 6. Saturno -->
+        <div class="orbita-planeta orbita-saturno">
+            <div class="planeta-corpo planeta-saturno" title="Saturno">
+                <div class="anel-saturno"></div>
+            </div>
+        </div>
+
+        <!-- 7. Urano -->
+        <div class="orbita-planeta orbita-urano">
+            <div class="planeta-corpo planeta-urano" title="Urano"></div>
+        </div>
+
+        <!-- 8. Netuno -->
+        <div class="orbita-planeta orbita-netuno">
+            <div class="planeta-corpo planeta-netuno" title="Netuno"></div>
+        </div>
+    </div>
 
     <!-- FOGUETE EM ÓRBITA -->
     <div class="orbita-foguete">
@@ -289,8 +481,6 @@
     <button class="btn-audio" id="btnAudio" onclick="alternarAudio(event)">🎵</button>
 
     <div class="fundo-ludico"></div>
-    <div class="planeta-1">🪐</div>
-    <div class="planeta-2">🌍</div>
 
     <div class="convite-container">
         <div class="foguetinho">🚀</div>
