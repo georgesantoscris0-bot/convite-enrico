@@ -177,7 +177,6 @@
         .rotacao-netuno { animation-duration: 72s; }
         .planeta-netuno { width: 26px; height: 26px; background: radial-gradient(circle, #42a5f5, #1565c0); border-radius: 50%; box-shadow: 0 0 10px #42a5f5; }
 
-        /* ANIMAÇÕES GERAIS DE ÓRBITA */
         .orbita-foguete {
             position: fixed;
             top: 50%;
@@ -199,7 +198,6 @@
             filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
         }
 
-        /* 🛸 DISCO VOADOR FLUTUANTE */
         .ufo-flutuante {
             position: fixed;
             top: 40px;
@@ -215,7 +213,6 @@
             100% { transform: translate(-20px, 40px) rotate(-10deg); }
         }
 
-        /* ☄️ ESTRELA CADENTE / METEORO */
         .estrela-cadente {
             position: fixed;
             top: 0;
@@ -241,7 +238,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ESTRELAS CINTILANTES NO FUNDO */
         .fundo-estrelado {
             position: fixed;
             top: 0;
@@ -264,6 +260,32 @@
             100% { opacity: 0.9; }
         }
 
+        /* 🕳️ BURACO NEGRO VISUAL NO CENTRO */
+        .buraco-negro-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 120px;
+            height: 120px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 0 0 30px 10px #9c27b0, 0 0 60px 20px #3f51b5, inset 0 0 20px #000;
+            z-index: 9;
+            pointer-events: none;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .buraco-negro-container.ativo {
+            transform: translate(-50%, -50%) scale(1);
+            animation: rodarBuraco 2s linear infinite;
+        }
+
+        @keyframes rodarBuraco {
+            0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+        }
+
         /* CONTAINER DO CONVITE */
         .convite-container {
             background: rgba(255, 255, 255, 0.96);
@@ -277,6 +299,13 @@
             z-index: 10;
             position: relative;
             backdrop-filter: blur(4px);
+            transition: transform 1.5s cubic-bezier(0.55, 0.055, 0.675, 0.19), opacity 1.5s ease;
+        }
+
+        /* ANIMAÇÃO DE SUCÇÃO DO CONVITE PELO BURACO NEGRO */
+        .convite-container.sugado {
+            transform: scale(0) rotate(720deg);
+            opacity: 0;
         }
 
         .foguetinho {
@@ -440,7 +469,6 @@
             100% { transform: translateY(0px) rotate(0deg); }
         }
 
-        /* 📱 AJUSTES RESPONSIVOS PARA TELAS MENORES */
         @media (max-width: 480px) {
             .sol-central { width: 170px; height: 170px; }
             .orbita-mercurio { width: 220px; height: 220px; }
@@ -458,10 +486,13 @@
 </head>
 <body onclick="iniciarMusicaComClique()">
 
-    <!-- FUNDO ESTRELADO E METEORO -->
+    <!-- FUNDO ESTRELADO E ASTROS -->
     <div class="fundo-estrelado"></div>
     <div class="estrela-cadente"></div>
     <div class="ufo-flutuante">🛸</div>
+
+    <!-- BURACO NEGRO CENTRAL -->
+    <div id="buracoNegro" class="buraco-negro-container"></div>
 
     <!-- SISTEMA SOLAR E PLANETAS -->
     <div class="sistema-solar">
@@ -539,7 +570,7 @@
     <button class="btn-audio" id="btnAudio" onclick="alternarAudio(event)">🎵</button>
 
     <!-- CONVITE PRINCIPAL -->
-    <div class="convite-container">
+    <div id="conviteCard" class="convite-container">
         <div class="foguetinho">🚀</div>
         <h1>UM ANO DE PURA AVENTURA NO ESPAÇO!</h1>
         <div class="subtitulo">O 1º Aninho do Enrico!</div>
@@ -649,6 +680,27 @@
 
             inputNome.value = "";
         }
+
+        /* 🕳️ EVENTO DO BURACO NEGRO A CADA 30 SEGUNDOS */
+        setInterval(() => {
+            const buraco = document.getElementById("buracoNegro");
+            const card = document.getElementById("conviteCard");
+
+            // 1. Abre o buraco negro no centro
+            buraco.classList.add("ativo");
+
+            // 2. Após meio segundo, suga o convite
+            setTimeout(() => {
+                card.classList.add("sugado");
+            }, 600);
+
+            // 3. Após 3 segundos, fecha o buraco e recria o convite na tela
+            setTimeout(() => {
+                card.classList.remove("sugado");
+                buraco.classList.remove("ativo");
+            }, 3600);
+
+        }, 30000);
     </script>
 </body>
 </html>
